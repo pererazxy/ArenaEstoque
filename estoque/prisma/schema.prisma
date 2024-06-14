@@ -1,0 +1,35 @@
+// schema.prisma
+datasource db {
+  provider = "sqlite" // ou outro provedor de banco de dados como "postgresql"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String
+  email    String  @unique
+  password String
+  photoUrl String? // URL da foto do usuário
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  photourl String?
+  Product  Product[]
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  photourl    String?
+  amount      Int?
+  value       Float?
+  categoryId  Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
+}
